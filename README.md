@@ -1,2 +1,1 @@
-# Research-Team
-April Dallas
+An intensive and educative research work to examine workplace monitoring's impact on productivity, satisfaction, and well-being while addressing legal and ethical concerns. It aims to develop a transparent, ethical, and efficient all-in-one solution that fosters trust and balances monitoring with employee rights.
