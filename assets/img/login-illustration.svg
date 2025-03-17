@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="500" height="500" viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <!-- Background elements -->
+    <circle cx="250" cy="250" r="200" fill="#ffffff" fill-opacity="0.1"/>
+    <path d="M50,50 Q150,150 250,50 T450,50" stroke="#ffffff" stroke-width="2" fill="none" opacity="0.2"/>
+    
+    <!-- Communication icons -->
+    <g opacity="0.3">
+        <!-- Email icon -->
+        <rect x="50" y="100" width="40" height="30" rx="5" stroke="#ffffff" fill="none"/>
+        <path d="M50,105 L70,120 L90,105" stroke="#ffffff" fill="none"/>
+        
+        <!-- Chat bubble -->
+        <path d="M380,150 Q400,150 400,170 L400,190 Q400,210 380,210 L360,210 L350,225 L340,210 L320,210 Q300,210 300,190 L300,170 Q300,150 320,150 Z" stroke="#ffffff" fill="none"/>
+        
+        <!-- Globe -->
+        <circle cx="200" cy="350" r="30" stroke="#ffffff" fill="none"/>
+        <path d="M170,350 Q200,380 230,350" stroke="#ffffff" fill="none"/>
+        <path d="M200,320 L200,380" stroke="#ffffff" fill="none"/>
+    </g>
+    
+    <!-- Main illustration - Person -->
+    <g transform="translate(150,150)">
+        <!-- Head -->
+        <path d="M100,50 Q120,30 140,50 Q160,70 140,90 Q120,110 100,90 Q80,70 100,50" fill="#000000"/>
+        
+        <!-- Body -->
+        <path d="M120,90 L120,200 Q140,210 160,200 L160,120" fill="#7E57C2"/>
+        
+        <!-- Arm -->
+        <path d="M160,130 Q200,140 220,120" stroke="#7E57C2" stroke-width="20" stroke-linecap="round"/>
+        
+        <!-- OK sign -->
+        <circle cx="230" cy="110" r="15" stroke="#ffffff" stroke-width="5" fill="none"/>
+        <path d="M220,110 L230,120 L245,105" stroke="#ffffff" stroke-width="5" fill="none"/>
+    </g>
+</svg>

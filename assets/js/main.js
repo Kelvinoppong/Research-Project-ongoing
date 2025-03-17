@@ -1,3 +1,86 @@
+// Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyChGM_q3QAsdQ_UBmn_xpp7RlnU1hDx0pI",
+  authDomain: "research-project-ff3c4.web.app",
+  projectId: "research-project-ff3c4",
+  storageBucket: "research-project-ff3c4.firebasestorage.app",
+  messagingSenderId: "685338989067",
+  appId: "1:685338989067:web:e626fa38097fe554cf6d0e"
+};
+
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+
+// Initialize Firebase Authentication
+const auth = firebase.auth();
+
+// Check authentication state
+auth.onAuthStateChanged(user => {
+  if (!user && !window.location.pathname.includes('index.html')) {
+    // If not authenticated and not on login page, redirect to login
+    window.location.href = 'index.html';
+    return;
+  }
+  
+  if (user) {
+    // User is signed in
+    const whenSignedIn = document.getElementById('when-signed-in');
+    const whenSignedOut = document.getElementById('when-signed-out');
+    
+    if (whenSignedIn && whenSignedOut) {
+      whenSignedIn.hidden = false;
+      whenSignedOut.hidden = true;
+    }
+  } else {
+    // User is signed out
+    const whenSignedIn = document.getElementById('when-signed-in');
+    const whenSignedOut = document.getElementById('when-signed-out');
+    
+    if (whenSignedIn && whenSignedOut) {
+      whenSignedIn.hidden = true;
+      whenSignedOut.hidden = false;
+    }
+  }
+});
+
+// Auth elements
+const signInBtn = document.getElementById('sign-in');
+const signOutBtn = document.getElementById('sign-out');
+
+// Sign in event handlers with error handling
+signInBtn?.addEventListener('click', async () => {
+  try {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    provider.setCustomParameters({
+      prompt: 'select_account'
+    });
+    await auth.signInWithPopup(provider);
+    window.location.href = 'dashboard.html';
+  } catch (error) {
+    console.error('Sign-in error:', error);
+    if (error.code === 'auth/popup-blocked') {
+      alert('Please enable popups for this site to use Google Sign-In');
+    } else if (error.code === 'auth/unauthorized-domain') {
+      alert('This domain is not authorized. Please make sure to add localhost and 127.0.0.1 to the authorized domains in your Firebase console under Authentication > Settings.');
+    } else if (error.code === 'auth/third-party-cookies-blocked') {
+      alert('Please enable third-party cookies to use Google Sign-In, or try signing in with email/password');
+    } else {
+      alert(`Authentication error: ${error.message}`);
+    }
+  }
+});
+
+// Sign out handler
+signOutBtn?.addEventListener('click', async () => {
+  try {
+    await auth.signOut();
+    window.location.href = 'index.html';
+  } catch (error) {
+    console.error('Sign-out error:', error);
+  }
+});
+
+// Team members drag and drop functionality
 const teamMembers = document.getElementById("team-members");
 
 new Sortable(teamMembers, {
@@ -16,7 +99,7 @@ new Sortable(myTeam, {
   dragClass: "team-member-drag",
 });
 
-document.getElementById("save-button").addEventListener("click", function() {
+document.getElementById("save-button")?.addEventListener("click", function() {
   const present1 = [];
   const allMembers = document.querySelectorAll("#team-members .team-member-name, #my-team .team-member-name");
   const myTeamMembers = document.querySelectorAll("#my-team .team-member-name");
@@ -66,4 +149,3 @@ document.getElementById("save-button").addEventListener("click", function() {
     teamMembersContainer.appendChild(myTeamContainer.firstChild);
   }
 });
-

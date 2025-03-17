@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Welcome - Research Project</title>
+    <title>Sign Up - Research Project</title>
     <style>
         * {
             margin: 0;
@@ -17,12 +17,12 @@
             background-color: #f5f5f5;
         }
 
-        .login-container {
+        .signup-container {
             display: flex;
             width: 100%;
         }
 
-        .login-form {
+        .signup-form {
             flex: 1;
             padding: 40px;
             display: flex;
@@ -67,6 +67,7 @@
             color: #333;
         }
 
+        input[type="text"],
         input[type="email"],
         input[type="password"] {
             width: 100%;
@@ -76,25 +77,13 @@
             font-size: 16px;
         }
 
-        .remember-forgot {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        .error-message {
+            color: #d32f2f;
             margin-bottom: 20px;
+            display: none;
         }
 
-        .remember-me {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .forgot-password {
-            color: #7E57C2;
-            text-decoration: none;
-        }
-
-        .sign-in-button {
+        .sign-up-button {
             width: 100%;
             padding: 12px;
             background-color: #7E57C2;
@@ -104,6 +93,11 @@
             font-size: 16px;
             cursor: pointer;
             margin-bottom: 20px;
+            transition: background-color 0.2s;
+        }
+
+        .sign-up-button:hover {
+            background-color: #6c4aa6;
         }
 
         .google-button,
@@ -120,13 +114,12 @@
             justify-content: center;
             gap: 10px;
             margin-bottom: 12px;
-            transition: all 0.2s ease;
+            transition: background-color 0.2s;
         }
 
         .google-button:hover,
         .microsoft-button:hover {
             background-color: #f5f5f5;
-            border-color: #ccc;
         }
 
         .auth-divider {
@@ -154,20 +147,20 @@
             margin-bottom: 20px;
         }
 
-        .signup-link {
+        .login-link {
             text-align: center;
             color: #666;
         }
 
-        .signup-link a {
+        .login-link a {
             color: #7E57C2;
             text-decoration: none;
         }
 
-        .error-message {
-            color: #d32f2f;
-            margin-bottom: 20px;
-            display: none;
+        .password-requirements {
+            font-size: 12px;
+            color: #666;
+            margin-top: 4px;
         }
     </style>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -175,29 +168,34 @@
     <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="login-container">
-        <div class="login-form">
-            <h1>Welcome back</h1>
-            <p class="subtitle">Please enter your details</p>
+    <div class="signup-container">
+        <div class="signup-form">
+            <h1>Create an account</h1>
+            <p class="subtitle">Join us to start managing your research project</p>
             
             <div id="error-message" class="error-message"></div>
             
             <div class="social-buttons">
-                <button id="googleSignIn" class="google-button">
+                <button id="googleSignUp" class="google-button">
                     <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google logo" width="18">
-                    Sign in with Google
+                    Sign up with Google
                 </button>
-                <button id="microsoftSignIn" class="microsoft-button">
+                <button id="microsoftSignUp" class="microsoft-button">
                     <img src="assets/img/microsoft-logo.svg" alt="Microsoft logo" width="18">
-                    Sign in with Microsoft
+                    Sign up with Microsoft
                 </button>
             </div>
 
             <div class="auth-divider">
                 <span>or continue with email</span>
             </div>
-            
-            <form id="loginForm">
+
+            <form id="signupForm">
+                <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+
                 <div class="form-group">
                     <label for="email">Email address</label>
                     <input type="email" id="email" name="email" required>
@@ -206,26 +204,24 @@
                 <div class="form-group">
                     <label for="password">Password</label>
                     <input type="password" id="password" name="password" required>
+                    <p class="password-requirements">Password must be at least 6 characters long</p>
                 </div>
                 
-                <div class="remember-forgot">
-                    <div class="remember-me">
-                        <input type="checkbox" id="remember" name="remember">
-                        <label for="remember">Remember for 30 days</label>
-                    </div>
-                    <a href="#" class="forgot-password">Forgot password</a>
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm Password</label>
+                    <input type="password" id="confirmPassword" name="confirmPassword" required>
                 </div>
                 
-                <button type="submit" class="sign-in-button">Sign in</button>
+                <button type="submit" class="sign-up-button">Sign up</button>
             </form>
             
-            <p class="signup-link">
-                Don't have an account? <a href="signup.html">Sign up</a>
+            <p class="login-link">
+                Already have an account? <a href="index.html">Sign in</a>
             </p>
         </div>
         
         <div class="illustration">
-            <img src="assets/img/login-illustration.svg" alt="Login illustration">
+            <img src="assets/img/login-illustration.svg" alt="Sign up illustration">
         </div>
     </div>
 
@@ -246,8 +242,6 @@
         // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
-        
-        // Configure providers
         const googleProvider = new firebase.auth.GoogleAuthProvider();
         const microsoftProvider = new firebase.auth.OAuthProvider('microsoft.com');
         microsoftProvider.setCustomParameters({
@@ -268,8 +262,8 @@
             errorDiv.style.display = 'none';
         }
 
-        // Handle social sign in
-        async function handleSocialSignIn(provider) {
+        // Handle social sign up
+        async function handleSocialSignUp(provider) {
             clearError();
             try {
                 await auth.signInWithRedirect(provider);
@@ -282,19 +276,64 @@
                 } else if (error.code === 'auth/unauthorized-domain') {
                     showError('Authentication domain error. Please try again later.');
                 } else {
-                    showError('An error occurred during sign-in. Please try again.');
+                    showError('An error occurred during sign-up. Please try again.');
                 }
             }
         }
 
-        // Google Sign In
-        document.getElementById('googleSignIn').addEventListener('click', () => {
-            handleSocialSignIn(googleProvider);
+        // Google Sign Up
+        document.getElementById('googleSignUp').addEventListener('click', () => {
+            handleSocialSignUp(googleProvider);
         });
 
-        // Microsoft Sign In
-        document.getElementById('microsoftSignIn').addEventListener('click', () => {
-            handleSocialSignIn(microsoftProvider);
+        // Microsoft Sign Up
+        document.getElementById('microsoftSignUp').addEventListener('click', () => {
+            handleSocialSignUp(microsoftProvider);
+        });
+
+        // Email/Password Sign Up
+        document.getElementById('signupForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            clearError();
+
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+
+            // Validate password
+            if (password.length < 6) {
+                showError('Password must be at least 6 characters long');
+                return;
+            }
+
+            // Check if passwords match
+            if (password !== confirmPassword) {
+                showError('Passwords do not match');
+                return;
+            }
+
+            try {
+                // Create user with email and password
+                const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+                
+                // Update user profile with name
+                await userCredential.user.updateProfile({
+                    displayName: name
+                });
+
+                // Redirect to dashboard
+                window.location.href = 'dashboard.html';
+            } catch (error) {
+                console.error('Error:', error);
+                if (error.code === 'auth/email-already-in-use') {
+                    showError('This email is already registered. Please sign in instead.');
+                } else if (error.code === 'auth/invalid-email') {
+                    showError('Please enter a valid email address.');
+                } else {
+                    showError('An error occurred during sign up. Please try again.');
+                }
+            }
         });
 
         // Handle redirect result
@@ -304,32 +343,8 @@
             }
         }).catch((error) => {
             console.error('Redirect result error:', error);
-            if (error.code === 'auth/account-exists-with-different-credential') {
-                showError('An account already exists with this email. Please use another sign-in method.');
-            } else if (error.code === 'auth/unauthorized-domain') {
+            if (error.code === 'auth/unauthorized-domain') {
                 showError('Authentication domain error. Please try again later.');
-            }
-        });
-
-        // Email/Password Sign In
-        document.getElementById('loginForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            clearError();
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            
-            try {
-                await auth.signInWithEmailAndPassword(email, password);
-                window.location.href = 'dashboard.html';
-            } catch (error) {
-                console.error('Error:', error);
-                if (error.code === 'auth/wrong-password' || error.code === 'auth/user-not-found') {
-                    showError('Invalid email or password');
-                } else if (error.code === 'auth/too-many-requests') {
-                    showError('Too many failed attempts. Please try again later');
-                } else {
-                    showError('An error occurred. Please try again');
-                }
             }
         });
 
